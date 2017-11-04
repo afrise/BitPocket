@@ -31,21 +31,13 @@ fun getBalance(i: String): Double {
 fun ByteArray.toHex() : String{
     val result = StringBuffer()
     forEach {
-        val octet = it.toInt()
-        val firstIndex = (octet and 0xF0).ushr(4)
-        val secondIndex = octet and 0x0F
-        result.append("0123456789ABCDEF".toCharArray()[firstIndex])
-        result.append("0123456789ABCDEF".toCharArray()[secondIndex])
+        result.append("0123456789ABCDEF".toCharArray()[(it.toInt() and 0xF0).ushr(4)])
+        result.append("0123456789ABCDEF".toCharArray()[it.toInt() and 0x0F])
     }
     return result.toString()
 }
 fun String.hexStringToByteArray() : ByteArray {
     val result = ByteArray(length / 2)
-    for (i in 0 until length step 2) {
-        val firstIndex = "0123456789ABCDEF".toCharArray().indexOf(this[i])
-        val secondIndex = "0123456789ABCDEF".toCharArray().indexOf(this[i + 1])
-        val octet = firstIndex.shl(4).or(secondIndex)
-        result[i.shr(1)] = octet.toByte()
-    }
+    for (i in 0 until length step 2) result[i.shr(1)] = "0123456789ABCDEF".toCharArray().indexOf(this[i]).shl(4).or("0123456789ABCDEF".toCharArray().indexOf(this[i + 1])).toByte()
     return result
 }
